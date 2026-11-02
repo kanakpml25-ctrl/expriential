@@ -1,22 +1,201 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z'/><path d='m9 10 2 2 4-4'/></svg>" />
-    <title>QuizMaster - Online Quiz & Assessment System</title>
-    <meta name="description" content="Comprehensive academic quiz management and online test portal with question bank management, live proctored test environment, and detailed performance analytics." />
-    <meta property="og:title" content="QuizMaster - Online Quiz & Assessment System" />
-    <meta property="og:description" content="Comprehensive academic quiz management and online test portal with question bank management, live proctored test environment, and detailed performance analytics." />
-    <meta property="og:type" content="website" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-  </head>
-  <body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 antialiased min-h-screen selection:bg-blue-600 selection:text-white">
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
-</html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Online Quiz Management System</title>
+<style>
+:root{--bg:#f4f8f8;--card:#fff;--ink:#1b2733;--mut:#5b6b7a;--pri:#1f3a5f;--acc:#2f7f86;--line:#d5e3e3;--ok:#2e9e5b;--bad:#d64545;--hd:#eaf3f3;--onpri:#fff;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10181f;--card:#18232d;--ink:#e6edf3;--mut:#9fb0bf;--pri:#8fb4e8;--acc:#5fc1c9;--line:#2a3a47;--hd:#1f2d39;--onpri:#10181f}}
+:root[data-theme="dark"]{--bg:#10181f;--card:#18232d;--ink:#e6edf3;--mut:#9fb0bf;--pri:#8fb4e8;--acc:#5fc1c9;--line:#2a3a47;--hd:#1f2d39;--onpri:#10181f}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+.wrap{max-width:980px;margin:0 auto;padding:14px}
+header{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;margin-bottom:12px}
+h1{font-size:20px;margin:0;color:var(--pri)}h3{margin:0 0 10px;color:var(--pri)}
+.sub{color:var(--mut);font-size:13px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px;margin-bottom:12px}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+input,select,textarea{padding:8px 10px;border:1px solid var(--line);border-radius:7px;background:var(--bg);color:var(--ink);font:inherit;min-width:0}
+input:not([type=radio]),select{flex:1 1 150px}textarea{width:100%;min-height:90px;font-family:ui-monospace,Consolas,monospace;font-size:12px}
+.btn{padding:8px 14px;border:0;border-radius:7px;background:var(--pri);color:var(--onpri);font:inherit;font-weight:600;cursor:pointer}
+.btn.sec{background:var(--hd);color:var(--pri);border:1px solid var(--line)}.btn.bad{background:var(--bad);color:#fff}.btn.sm{padding:4px 10px;font-size:13px}
+.tabs{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}.tabs .btn{background:var(--card);color:var(--pri);border:1px solid var(--line)}.tabs .btn.on{background:var(--pri);color:var(--onpri)}
+.scroll{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{border:1px solid var(--line);padding:6px 9px;text-align:left;vertical-align:top}th{background:var(--hd)}
+.msg{padding:9px 12px;border-radius:8px;margin-bottom:12px;background:var(--hd);border:1px solid var(--line)}.msg.bad{border-color:var(--bad);color:var(--bad)}.msg.ok{border-color:var(--ok)}
+.q{margin-bottom:14px}.opt{display:block;padding:5px 8px;border-radius:6px;cursor:pointer}.opt:hover{background:var(--hd)}
+.good{color:var(--ok);font-weight:700}.wrong{color:var(--bad);font-weight:700}
+.big{font-size:30px;font-weight:800;color:var(--pri)}
+nav.top{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:14px}
+.hero{background:linear-gradient(135deg,var(--pri),var(--acc));color:#fff;border-radius:14px;padding:34px 22px;text-align:center;margin-bottom:14px}
+.hero h2{margin:0 0 8px;font-size:30px;line-height:1.2}.hero p{margin:0 auto 16px;max-width:620px;opacity:.95}
+.hero .btn{background:#fff;color:#1f3a5f;margin:4px}.hero .btn.sec{background:transparent;color:#fff;border:1px solid #fff}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:12px}
+.grid .card{margin:0}.grid h4{margin:0 0 6px;color:var(--pri)}.grid p{margin:0;color:var(--mut);font-size:14px}
+.step{display:flex;gap:12px;align-items:flex-start;margin:10px 0}.step b.n{flex:0 0 30px;height:30px;border-radius:50%;background:var(--pri);color:var(--onpri);display:grid;place-items:center}
+footer{color:var(--mut);font-size:12px;text-align:center;margin:16px 0}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<script>
+const OPT = ["A", "B", "C", "D"];
+let T = null, U = null, V = { tab: "home" }, note = null, ERR = null, BUSY = false;
+const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const $ = id => document.getElementById(id);
+const val = id => ($(id) ? $(id).value.trim() : "");
+const tbl = (h, rows) => `<div class="scroll"><table><tr>${h.map(x => `<th>${x}</th>`).join("")}</tr>${rows.map(r => `<tr>${r.map(c => `<td>${c}</td>`).join("")}</tr>`).join("")}</table></div>`;
 
+// ---------- talk to the Python server ----------
+async function api(m, p, b) {
+  try {
+    const r = await fetch("/api" + p, { method: m, headers: { "Content-Type": "application/json", ...(T ? { Authorization: "Bearer " + T } : {}) }, body: b ? JSON.stringify(b) : undefined });
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.error || "Request failed.");
+    return d;
+  } catch (e) {
+    const m2 = e instanceof TypeError ? "Cannot reach the Python server. Run quiz_server.py and open http://localhost:8000" : e.message;
+    if (BUSY) ERR = m2; else say(m2, "bad");
+    return null;
+  }
+}
+function say(m, kind) { note = { m, kind }; render(); }
+const tab = t => { V = { tab: t }; render(); };
+
+// ---------- login / register ----------
+async function doLogin() {
+  const d = await api("POST", "/login", { username: val("lu"), password: val("lp") });
+  if (d) { T = d.token; U = d; V = { tab: "quizzes" }; say("Welcome, " + d.name + "!", "ok"); }
+}
+async function doRegister() {
+  if (await api("POST", "/register", { username: val("ru"), name: val("rn"), password: val("rp") })) { V = { tab: "login" }; say("Registration successful! You can login now.", "ok"); }
+}
+function logout() { T = null; U = null; V = { tab: "home" }; render(); }
+
+// ---------- admin ----------
+async function createQuiz() {
+  const d = await api("POST", "/quiz", { title: val("qt"), subject: val("qs"), negative_marks: parseFloat(val("qn")) || 0 });
+  if (d) { V = { tab: "quizzes", manage: d.quiz_id }; say("Quiz created. Now add questions.", "ok"); }
+}
+async function delQuiz(id) { if (confirm("Delete this quiz permanently?") && await api("DELETE", "/quiz/" + id)) say("Quiz deleted.", "ok"); }
+async function saveQ() {
+  const b = { text: val("xt"), options: [0, 1, 2, 3].map(i => val("xo" + i)), answer: +val("xa"), marks: parseInt(val("xm")) || 1 };
+  const d = V.edit != null ? await api("PUT", `/quiz/${V.manage}/question/${V.edit}`, b) : await api("POST", `/quiz/${V.manage}/question`, b);
+  if (d) { V.edit = null; say("Question saved.", "ok"); }
+}
+async function delQ(i) { if (await api("DELETE", `/quiz/${V.manage}/question/${i}`)) { V.edit = null; say("Question deleted.", "ok"); } }
+async function adminQuizzes() {
+  if (V.manage) {
+    const q = await api("GET", "/quiz/" + V.manage); if (!q) return "";
+    const e = V.edit != null ? q.questions[V.edit] : null;
+    return `<div class="card"><div class="row"><h3 style="margin:0;flex:1">${esc(q.title)} - questions</h3><button class="btn sec sm" onclick="V.manage=null;V.edit=null;render()">Back</button></div>
+    ${q.questions.length ? q.questions.map((x, i) => `<div class="q"><b>Q${i + 1}.</b> ${esc(x.text)} <span class="sub">[${x.marks} mark(s)]</span><br>${x.options.map((o, k) => `<span class="${k === x.answer ? "good" : ""}">${OPT[k]}) ${esc(o)}${k === x.answer ? " &#10003;" : ""}</span>`).join(" &nbsp; ")}<br><button class="btn sec sm" onclick="V.edit=${i};render()">Edit</button> <button class="btn bad sm" onclick="delQ(${i})">Delete</button></div>`).join("") : "<p class='sub'>No questions yet.</p>"}</div>
+    <div class="card"><h3>${e ? "Edit question" : "Add question"}</h3>
+    <div class="row"><input id="xt" placeholder="Question text" value="${esc(e ? e.text : "")}" style="flex-basis:100%"></div><div class="row" style="margin-top:8px">
+    ${[0, 1, 2, 3].map(i => `<input id="xo${i}" placeholder="Option ${OPT[i]}" value="${esc(e ? e.options[i] : "")}">`).join("")}</div>
+    <div class="row" style="margin-top:8px"><select id="xa">${OPT.map((o, i) => `<option value="${i}" ${e && e.answer === i ? "selected" : ""}>Correct: ${o}</option>`).join("")}</select>
+    <input id="xm" type="number" min="1" max="10" placeholder="Marks (1-10)" value="${e ? e.marks : 1}"><button class="btn" onclick="saveQ()">${e ? "Update" : "Add"} question</button></div></div>`;
+  }
+  const qs = await api("GET", "/quizzes"); if (!qs) return "";
+  return `<div class="card"><h3>Create quiz</h3><div class="row"><input id="qt" placeholder="Quiz title"><input id="qs" placeholder="Subject"><input id="qn" type="number" min="0" step="0.25" placeholder="Negative marks per wrong answer"><button class="btn" onclick="createQuiz()">Create</button></div></div>
+  <div class="card"><h3>All quizzes</h3>${qs.length ? tbl(["ID", "Title", "Subject", "Questions", "Marks", "Negative", ""], qs.map(q => [q.quiz_id, esc(q.title), esc(q.subject), q.count, q.total_marks, q.negative_marks,
+    `<button class="btn sec sm" onclick="V.manage=${q.quiz_id};render()">Questions</button> <button class="btn bad sm" onclick="delQuiz(${q.quiz_id})">Delete</button>`])) : "<p class='sub'>No quizzes.</p>"}</div>`;
+}
+async function adminStudents() {
+  const s = await api("GET", "/students"); if (!s) return "";
+  return `<div class="card"><h3>Registered students</h3>${s.length ? tbl(["Username", "Name", "Attempts"], s.map(x => [esc(x.username), esc(x.name), x.attempts])) : "<p class='sub'>No students registered yet.</p>"}</div>`;
+}
+const history = h => h.length ? tbl(["Date", "Quiz", "Score", "Percent", "Grade"], h.map(r => [r.date, esc(r.quiz_title), r.score + " / " + r.total, r.percent, r.grade])) +
+  `<p class="sub">Attempts: ${h.length} &nbsp;|&nbsp; Best: ${Math.max(...h.map(r => r.percent))}%</p>` : "<p class='sub'>No attempts found.</p>";
+async function adminReports() {
+  const [s, qs] = [await api("GET", "/reports/summary"), await api("GET", "/quizzes")]; if (!s || !qs) return "";
+  if (!s.attempts) return `<div class="card"><h3>Reports</h3><p class="sub">No attempts recorded yet. Log in as a student and attempt a quiz first.</p></div>`;
+  const lq = V.lb || (qs[0] && qs[0].quiz_id), lb = lq ? await api("GET", "/reports/leaderboard?quiz_id=" + lq) : [];
+  const hist = V.hu ? await api("GET", "/reports/student?username=" + encodeURIComponent(V.hu)) : null;
+  const csv = V.csv ? (await api("GET", "/reports/export")).csv : "";
+  return `<div class="card"><h3>Quiz-wise performance summary</h3>${tbl(["Quiz", "Attempts", "Average %", "Highest", "Lowest", "Std Dev", "Median", "Pass %"], s.rows.map(r => [esc(r.quiz), r.attempts, r.average, r.highest, r.lowest, r.std, r.median, r.pass]))}
+  <p class="sub">Total attempts: ${s.attempts} &nbsp;|&nbsp; Unique students: ${s.students} &nbsp;|&nbsp; Overall average: ${s.overall}%</p></div>
+  <div class="card"><h3>Leaderboard</h3><select onchange="V.lb=this.value;render()">${qs.map(q => `<option value="${q.quiz_id}" ${q.quiz_id == lq ? "selected" : ""}>${esc(q.title)}</option>`).join("")}</select>
+  <div style="margin-top:8px">${lb && lb.length ? tbl(["Rank", "Username", "Score", "Percent", "Grade", "Time (s)"], lb.map((r, i) => [i + 1, esc(r.username), r.score + " / " + r.total, r.percent, r.grade, r.time_taken])) : "<p class='sub'>No attempts for this quiz yet.</p>"}</div></div>
+  <div class="card"><h3>Student result history</h3><div class="row"><input id="hu" placeholder="Student username" value="${esc(V.hu || "")}"><button class="btn" onclick="V.hu=val('hu').toLowerCase();render()">Show</button></div>
+  <div style="margin-top:8px">${hist ? history(hist) : ""}</div></div>
+  <div class="card"><h3>Export results (CSV)</h3><button class="btn" onclick="V.csv=!V.csv;render()">${V.csv ? "Hide" : "Show"} CSV</button>${V.csv ? `<p class="sub">Select all, copy, and paste into a .csv file.</p><textarea readonly onclick="this.select()">${esc(csv)}</textarea>` : ""}</div>`;
+}
+
+// ---------- student ----------
+async function start(id) { V = { tab: "quizzes", take: id, t0: Date.now() }; render(); }
+async function submit() {
+  const q = await api("GET", "/quiz/" + V.take); if (!q) return;
+  const ans = {};
+  q.questions.forEach((_, i) => { const r = document.querySelector(`input[name=q${i}]:checked`); ans[i] = r ? +r.value : null; });
+  const d = await api("POST", `/quiz/${V.take}/submit`, { answers: ans, time_taken: (Date.now() - V.t0) / 1000 });
+  if (d) { V = { tab: "quizzes", res: d }; render(); }
+}
+async function studentQuizzes() {
+  if (V.take) {
+    const q = await api("GET", "/quiz/" + V.take); if (!q) return "";
+    return `<div class="card"><h3>${esc(q.title)}</h3><p class="sub">${q.questions.length} questions | ${q.total_marks} marks | negative marking ${q.negative_marks}. Leave a question unanswered to skip it.</p>
+    ${q.questions.map((x, i) => `<div class="q"><b>Q${i + 1}.</b> ${esc(x.text)} <span class="sub">[${x.marks} mark(s)]</span>${x.options.map((o, k) => `<label class="opt"><input type="radio" name="q${i}" value="${k}"> ${OPT[k]}) ${esc(o)}</label>`).join("")}</div>`).join("")}
+    <div class="row"><button class="btn" onclick="submit()">Submit quiz</button><button class="btn sec" onclick="tab('quizzes')">Cancel</button></div></div>`;
+  }
+  if (V.res) {
+    const r = V.res;
+    return `<div class="card"><h3>Result</h3><div class="big">${r.score} / ${r.total} (${r.percent}%)</div>
+    <p>Grade: <b>${r.grade}</b> - <span class="${r.passed ? "good" : "wrong"}">${r.passed ? "PASS" : "FAIL"}</span><br>Correct ${r.correct} | Wrong ${r.wrong} | Skipped ${r.skipped}<br>Time taken: ${r.time_taken} sec</p>
+    ${r.wrong_answers.length ? `<h3>Correct answers for wrong questions</h3>` + r.wrong_answers.map(w => `<p>Q${w.q}: correct answer is <b>${esc(w.correct)}</b></p>`).join("") : ""}
+    <button class="btn" onclick="tab('quizzes')">Back to quizzes</button></div>`;
+  }
+  const qs = await api("GET", "/quizzes"); if (!qs) return "";
+  return `<div class="card"><h3>Available quizzes</h3>${qs.length ? tbl(["Title", "Subject", "Questions", "Marks", "Negative", ""], qs.map(q => [esc(q.title), esc(q.subject), q.count, q.total_marks, q.negative_marks,
+    q.count ? `<button class="btn sm" onclick="start(${q.quiz_id})">Attempt</button>` : "<span class='sub'>No questions</span>"])) : "<p class='sub'>No quizzes available.</p>"}</div>`;
+}
+
+function goHome() {
+  const f = [["Admin dashboard", "Create and delete quizzes, set negative marking, add, edit and delete questions."],
+    ["Student portal", "Register, log in, attempt quizzes and see the result instantly."],
+    ["Auto evaluation", "Marks for correct answers, negative marks for wrong ones, skipped questions score zero."],
+    ["Grades and results", "Percentage, grade (A+ to F), pass or fail, time taken and result history."],
+    ["Performance reports", "Average, highest, lowest, median, standard deviation and pass percentage."],
+    ["Leaderboard and CSV", "Top students for every quiz and export of all results as CSV."]];
+  return `<div class="hero"><h2>Online Quiz Management System</h2><p>Create quizzes, attempt them online, get automatic evaluation and performance reports, all in one place.</p>
+  <button class="btn" onclick="tab('login')">Login</button><button class="btn sec" onclick="tab('register')">Student registration</button></div>
+  <div class="grid">${f.map(x => `<div class="card"><h4>${x[0]}</h4><p>${x[1]}</p></div>`).join("")}</div>
+  <div class="card"><h3>How it works</h3>
+  <div class="step"><b class="n">1</b><div><b>Admin creates a quiz.</b><br><span class="sub">Log in as admin, create a quiz and add multiple-choice questions.</span></div></div>
+  <div class="step"><b class="n">2</b><div><b>Student registers and attempts.</b><br><span class="sub">Choose a quiz, answer A, B, C or D, or skip a question.</span></div></div>
+  <div class="step"><b class="n">3</b><div><b>Result and reports.</b><br><span class="sub">The score and grade appear instantly; the admin sees summary, leaderboard and CSV.</span></div></div></div>
+  <div class="card"><h3>About the project</h3><p style="margin:0">Experiential learning project for <b>Python Programming Language (N-PCCCM304P)</b>, Department of CSE (AI&amp;ML), S. B. Jain Institute of Technology, Management &amp; Research, Nagpur. Developed by <b>Kanak Patni</b> (USN: CM25084). The logic runs in a Python program (quiz_server.py) and this page is its frontend.</p></div>`;
+}
+
+
+// ---------- main render ----------
+async function render() {
+  const n = note; note = null; ERR = null; BUSY = true;
+  let b = "";
+  if (!U) {
+    const t = V.tab === "register" ? "register" : V.tab === "login" ? "login" : "home";
+    b += `<nav class="top tabs"><button class="btn ${t === "home" ? "on" : ""}" onclick="tab('home')">Home</button><button class="btn ${t === "login" ? "on" : ""}" onclick="tab('login')">Login</button><button class="btn ${t === "register" ? "on" : ""}" onclick="tab('register')">Student registration</button></nav>`;
+    b += t === "home" ? goHome() : t === "login"
+      ? `<div class="card"><h3>Login</h3><div class="row"><input id="lu" placeholder="Username" autocomplete="username"><input id="lp" type="password" placeholder="Password" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()"><button class="btn" onclick="doLogin()">Login</button></div>
+         <p class="sub">Admin: <b>admin</b> / <b>admin123</b>. Students register first (Student registration tab).</p></div>`
+      : `<div class="card"><h3>Student registration</h3><div class="row"><input id="ru" placeholder="Choose username"><input id="rn" placeholder="Full name"><input id="rp" type="password" placeholder="Choose password (min 4)"><button class="btn" onclick="doRegister()">Register</button></div></div>`;
+  } else if (U.role === "admin") {
+    const t = V.tab || "quizzes";
+    b += `<div class="tabs">${[["quizzes", "Quizzes"], ["students", "Students"], ["reports", "Reports"]].map(([k, l]) => `<button class="btn ${t === k ? "on" : ""}" onclick="tab('${k}')">${l}</button>`).join("")}</div>`;
+    b += t === "students" ? await adminStudents() : t === "reports" ? await adminReports() : await adminQuizzes();
+  } else {
+    const t = V.tab || "quizzes";
+    b += `<div class="tabs"><button class="btn ${t === "quizzes" ? "on" : ""}" onclick="tab('quizzes')">Quizzes</button><button class="btn ${t === "results" ? "on" : ""}" onclick="tab('results')">My results</button></div>`;
+    b += t === "results" ? `<div class="card"><h3>My results</h3>${history(await api("GET", "/my-results") || [])}</div>` : await studentQuizzes();
+  }
+  BUSY = false;
+  const m = n || (ERR ? { m: ERR, kind: "bad" } : null);
+  $("app").innerHTML = `<header><div><h1>Online Quiz Management System</h1><div class="sub">Python Programming Language (N-PCCCM304P)</div></div>
+  ${U ? `<div class="row"><span class="sub">${esc(U.name)} (${U.role})</span><button class="btn sec sm" onclick="logout()">Logout</button></div>` : ""}</header>
+  ${m ? `<div class="msg ${m.kind}">${esc(m.m)}</div>` : ""}${b}<footer>Kanak Patni (CM25084) | S. B. Jain Institute of Technology, Management &amp; Research, Nagpur</footer>`;
+}
+render();
+</script>
+</body>
+</html>
