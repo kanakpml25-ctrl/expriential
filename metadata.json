@@ -1,0 +1,6 @@
+{
+  "name": "QuizMaster - Online Quiz & Assessment System",
+  "description": "Comprehensive academic quiz management and online test portal with question bank management, live proctored test environment, and detailed performance analytics.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
